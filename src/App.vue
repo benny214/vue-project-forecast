@@ -1,6 +1,19 @@
 <script setup>
+import { ref, onMounted } from 'vue';
 import WeatherSummary from './components/WeatherSummary.vue';
 import HighLights from './components/Highlights.vue';
+import { API_KEY, BASE_URL} from './constants'
+
+const city = ref('Paris')
+const weatherInfo = ref(null)
+
+function getWeather() {
+  fetch(`${BASE_URL}?q=${city.value}&units=metric&appid=${API_KEY}`)
+  .then((response) => response.json())
+  .then((data) => weatherInfo.value = data)
+}
+
+onMounted(getWeather)
 </script>
 
 <template>
@@ -12,9 +25,13 @@ import HighLights from './components/Highlights.vue';
               <section class="section section-left">
                 <div class="info">
                   <div class="city-inner">
-                    <input type="text" class="search">
+                    <input 
+                      v-model="city" 
+                      type="text" 
+                      class="search"
+                      @keyup.enter="getWeather">
                   </div>
-                  <WeatherSummary />
+                  <WeatherSummary :weatherInfo="weatherInfo"/>
                 </div>
               </section>
               <section class="section section-right">
