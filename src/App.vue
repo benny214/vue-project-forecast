@@ -1,5 +1,6 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue';
+import { capitalizeFirstLetter } from './utils';
 import WeatherSummary from './components/WeatherSummary.vue';
 import HighLights from './components/Highlights.vue';
 import Coords from './components/Coords.vue';
@@ -36,6 +37,12 @@ onMounted(getWeather)
                       
                   </div>
                   <WeatherSummary v-if="!isError" :weatherInfo="weatherInfo"/>
+                  <div v-else class="error">
+                    <div class="error-title">Error</div>
+                    <div v-if="weatherInfo?.message" class="error-msg">
+                      {{ capitalizeFirstLetter(weatherInfo?.message) }}
+                    </div>
+                  </div>
                 </div>
               </section>
               <section v-if="!isError" class="section section-right">
@@ -143,6 +150,18 @@ onMounted(getWeather)
 
   @media (max-width: 767px) {
     width: 100%;
+  }
+}
+
+.error {
+  padding: 20px;
+  &-tile {
+    font-size: 24px;
+    font-weight: 700;
+  }
+  &-msg {
+    margin-top: 8px;
+    font-size: 14px;
   }
 }
 </style>
