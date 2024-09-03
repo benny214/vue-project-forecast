@@ -155,7 +155,7 @@ onMounted(getWeather)
 
 .error {
   padding: 20px;
-  &-tile {
+  &-title {
     font-size: 24px;
     font-weight: 700;
   }
